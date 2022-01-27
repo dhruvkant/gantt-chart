@@ -530,6 +530,30 @@ export class GanttService {
       ],
     };
 
+    var resourceTemplates = {
+      grid_row_class: function (start, end, resource) {
+        var css = [];
+
+        if (gantt['$resourcesStore'].hasChild(resource.id)) {
+          css.push('folder_row');
+
+          css.push('group_row');
+        }
+
+        return css.join(' ');
+      },
+
+      task_row_class: function (start, end, resource) {
+        var css = [];
+
+        if (gantt['$resourcesStore'].hasChild(resource.id)) {
+          css.push('group_row');
+        }
+
+        return css.join(' ');
+      },
+    };
+
     gantt.config.layout = {
       css: 'gantt_container',
       rows: [
@@ -581,7 +605,6 @@ export class GanttService {
             {
               view: 'resourceTimeline',
               scrollX: 'scrollHor',
-              bind: 'resources',
               scrollY: 'resourceVScroll',
             },
             { view: 'scrollbar', id: 'resourceVScroll', group: 'vertical' },
@@ -710,6 +733,7 @@ export class GanttService {
     res.forEach((resource) => {
       let data = {
         id: resource['id'],
+        res_id: resource['id'],
         work_center_id: resource['work_center_id'],
         key: resource['RESOURCE_ID'],
         label: resource['work_center_id'] + ' - ' + resource['name'],

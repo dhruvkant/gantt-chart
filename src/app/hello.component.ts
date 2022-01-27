@@ -39,17 +39,8 @@ export class HelloComponent implements OnInit, AfterViewInit {
       name: gantt.config.resource_store,
       type: 'treeDatastore',
       initItem: function (item) {
-        item.parent = null;
-        item.open = false;
-        return item;
-      },
-    });
-    gantt.createDatastore({
-      name: gantt.config.resource_store,
-      type: 'treeDatastore',
-      initItem: function (item) {
-        item.parent = null;
-        item.open = false;
+        item.parent = 0;
+        item.open = true;
         return item;
       },
     });
@@ -77,6 +68,7 @@ export class HelloComponent implements OnInit, AfterViewInit {
       gantt.serverList('priority', priorityData);
       gantt.serverList('work_center', res.Workcenters);
       gantt.serverList('work_order', res.WorkOrders);
+      console.log(resourcesData);
       gantt
         .getDatastore(gantt.config.resource_store)
         .attachEvent('onParse', function () {
@@ -98,6 +90,9 @@ export class HelloComponent implements OnInit, AfterViewInit {
           gantt.updateCollection('people', people);
         });
       gantt.getDatastore(gantt.config.resource_store).parse(resourcesData);
+      gantt
+        .getDatastore(gantt.config.resource_assignment_store)
+        .parse([{ resource_id: 7, task_id: 21, value: 8 }]);
     }
   }
 
